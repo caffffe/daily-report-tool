@@ -5,6 +5,7 @@ import { config } from "./config";
 import { env } from "./env";
 import * as Util from "./util";
 import { PassThrough } from "stream";
+import account from './account.js';
 
 /**
  * TODO:
@@ -24,10 +25,10 @@ const OTHER = "other";
 const types = [
   BREAKING_CHANGE,
   NEW_FEATURE,
-  UI_CHANGE,
   BUGFIX,
   REFACTOR,
   TOOLING,
+  UI_CHANGE,
   OTHER,
 ];
 
@@ -42,14 +43,14 @@ function getSubTitle(type: string) {
       return "** :skull_crossbones: Breaking Change **";
     case NEW_FEATURE:
       return "** :tada: New Feature **";
-    case UI_CHANGE:
-      return "** :boom: UI Change **";
     case BUGFIX:
       return "** :white_check_mark: Bugfix **";
     case REFACTOR:
       return "** :first_place: Refactor **";
     case TOOLING:
       return "** :atom: Tooling **";
+    case UI_CHANGE:
+      return "** :boom: UI Change **";
     case OTHER:
       return "** :triangular_flag_on_post: Other **";
   }
@@ -151,8 +152,13 @@ async function getCommits() {
     const startTime = new Date(Date.now() - 24*60*60*1000).toISOString();
     const endTime = new Date().toISOString();
     const resp = await axios.get(
-      `https://api.github.com/repos/ringcentral/ringcentral-js-widgets/commits?since=${startTime}&until=${endTime}`
-    );
+      `https://api.github.com/repos/ringcentral/integration-apps/commits?since=${startTime}&until=${endTime}`
+    , {
+      auth: {
+        username: account.username,
+        password: account.password
+      }
+    });
     const prs = [];
     for (const data of resp.data) {
       const sha1 = data.sha;

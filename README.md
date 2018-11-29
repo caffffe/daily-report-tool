@@ -16,5 +16,15 @@ export let env = {
 };
 ```
 
+## Config your account
+
+You can configure github account like this.
+
+```ts
+export let account = {
+  username: "Your github username",
+  password: 'Your github password'
+};
+```
 ## TODO:
 - [ ] Add necessary types
